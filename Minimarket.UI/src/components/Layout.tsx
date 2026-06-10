@@ -15,14 +15,15 @@ const Layout: React.FC = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden', backgroundColor: '#FDFBF7' }}>
       <Sidebar />
       <Box 
         component="main" 
         sx={{ 
           flexGrow: 1, 
           overflow: 'auto',
-          p: 4
+          p: 4,
+          backgroundColor: '#FDFBF7'
         }}
       >
         <Outlet />

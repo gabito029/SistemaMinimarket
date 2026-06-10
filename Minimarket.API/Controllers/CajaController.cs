@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Minimarket.Application.Interfaces;
+using Minimarket.Domain.Entities;
 using System.Threading.Tasks;
 
 namespace Minimarket.API.Controllers
@@ -28,7 +29,15 @@ namespace Minimarket.API.Controllers
         {
             try
             {
-                var sesion = await _cajaService.AbrirCajaAsync(request.MontoApertura);
+                SesionCaja sesion;
+                if (request.UsuarioId.HasValue && request.UsuarioId.Value > 0)
+                {
+                    sesion = await _cajaService.AbrirCajaConUsuarioAsync(request.MontoApertura, request.UsuarioId.Value);
+                }
+                else
+                {
+                    sesion = await _cajaService.AbrirCajaAsync(request.MontoApertura);
+                }
                 return Ok(sesion);
             }
             catch (System.Exception ex)
@@ -55,6 +64,7 @@ namespace Minimarket.API.Controllers
     public class AbrirCajaRequest
     {
         public decimal MontoApertura { get; set; }
+        public int? UsuarioId { get; set; }
     }
 
     public class CerrarCajaRequest

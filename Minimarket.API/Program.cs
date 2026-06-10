@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Minimarket.Domain.Entities;
+using Minimarket.Infrastructure;
 using Minimarket.Application.Interfaces;
 using Minimarket.Infrastructure.Data;
 using Minimarket.Infrastructure.Services;
@@ -17,15 +18,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-});
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
 
 builder.Services.AddScoped<IVentasService, VentasService>();
 builder.Services.AddScoped<IInventarioService, InventarioService>();
@@ -33,7 +36,8 @@ builder.Services.AddScoped<ICajaService, CajaService>();
 builder.Services.AddScoped<ICreditoService, CreditoService>();
 
 builder.Services.AddDbContext<DbMinimarketContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 
 var app = builder.Build();

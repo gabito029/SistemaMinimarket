@@ -123,13 +123,13 @@ const UsersDashboard: React.FC = () => {
   };
 
   const commonTextFieldSx = {
-    '& .MuiInputLabel-root': { color: '#94a3b8' },
-    '& .MuiOutlinedInput-input': { color: 'white' },
-    '& .MuiSelect-select': { color: 'white' },
+    '& .MuiInputLabel-root': { color: '#8a7b6e' },
+    '& .MuiOutlinedInput-input': { color: '#4a3e3d' },
+    '& .MuiSelect-select': { color: '#4a3e3d' },
     '& .MuiOutlinedInput-root': { 
-      '& fieldset': { borderColor: 'rgba(255,255,255,0.2)' },
-      '&:hover fieldset': { borderColor: '#3b82f6' },
-      '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+      '& fieldset': { borderColor: '#eadec9' },
+      '&:hover fieldset': { borderColor: '#d97706' },
+      '&.Mui-focused fieldset': { borderColor: '#d97706' }
     }
   };
 
@@ -137,10 +137,10 @@ const UsersDashboard: React.FC = () => {
     <Box sx={{ animation: 'fadeIn 0.5s ease-out' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: '#fff', mb: 1 }}>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: '#4a3e3d', mb: 1 }}>
             Gestión de Usuarios
           </Typography>
-          <Typography variant="body1" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body1" sx={{ color: '#8a7b6e' }}>
             Control de accesos, roles y personal del sistema.
           </Typography>
         </Box>
@@ -149,16 +149,16 @@ const UsersDashboard: React.FC = () => {
           startIcon={<PersonAddIcon />}
           onClick={handleNewClick}
           sx={{ 
-            bgcolor: 'var(--primary)',
+            bgcolor: '#d97706',
             px: 3, py: 1.5,
             borderRadius: '12px',
             textTransform: 'none',
             fontWeight: 600,
-            boxShadow: '0 4px 14px 0 rgba(59, 130, 246, 0.39)',
+            boxShadow: '0 4px 14px 0 rgba(217, 119, 6, 0.25)',
             '&:hover': {
-              bgcolor: 'var(--primary-hover)',
+              bgcolor: '#b45309',
               transform: 'translateY(-2px)',
-              boxShadow: '0 6px 20px rgba(59, 130, 246, 0.4)'
+              boxShadow: '0 6px 20px rgba(217, 119, 6, 0.3)'
             },
             transition: 'all 0.3s ease'
           }}
@@ -168,31 +168,30 @@ const UsersDashboard: React.FC = () => {
       </Box>
 
       <TableContainer component={Paper} sx={{ 
-        background: 'var(--bg-panel)', 
-        backdropFilter: 'blur(16px)',
+        background: '#fff', 
         borderRadius: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+        border: '1px solid #eadec9',
+        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
       }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Usuario</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Rol</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Estado</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }} align="center">Acciones</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }}>Usuario</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }}>Rol</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }}>Estado</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }} align="center">Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
                 <TableCell colSpan={4} align="center" sx={{ py: 4 }}>
-                  <CircularProgress sx={{ color: 'var(--primary)' }} />
+                  <CircularProgress sx={{ color: '#d97706' }} />
                 </TableCell>
               </TableRow>
             ) : users.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} align="center" sx={{ py: 4, color: '#94a3b8' }}>
+                <TableCell colSpan={4} align="center" sx={{ py: 4, color: '#8a7b6e' }}>
                   No hay usuarios registrados en el sistema.
                 </TableCell>
               </TableRow>
@@ -205,53 +204,53 @@ const UsersDashboard: React.FC = () => {
                   sx={{ 
                     '&:last-child td, &:last-child th': { border: 0 },
                     transition: 'background 0.2s',
-                    '&:hover': { background: 'rgba(255, 255, 255, 0.03)' }
+                    '&:hover': { background: '#fdfbf7' }
                   }}
                 >
-                  <TableCell sx={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <TableCell sx={{ borderBottom: '1px solid #f1efe9' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar sx={{ bgcolor: getRoleColor(userRol), width: 40, height: 40, fontWeight: 600 }}>
                         {row.nombre ? row.nombre.charAt(0) : 'U'}
                       </Avatar>
                       <Box>
-                        <Typography sx={{ color: '#fff', fontWeight: 600 }}>{row.nombre}</Typography>
-                        <Typography variant="body2" sx={{ color: '#94a3b8' }}>@{row.username}</Typography>
+                        <Typography sx={{ color: '#4a3e3d', fontWeight: 600 }}>{row.nombre}</Typography>
+                        <Typography variant="body2" sx={{ color: '#8a7b6e' }}>@{row.username}</Typography>
                       </Box>
                     </Box>
                   </TableCell>
-                  <TableCell sx={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <TableCell sx={{ borderBottom: '1px solid #f1efe9' }}>
                     <Chip 
                       label={userRol} 
                       size="small" 
                       sx={{ 
-                        background: `${getRoleColor(userRol)}20`, 
+                        background: `${getRoleColor(userRol)}15`, 
                         color: getRoleColor(userRol),
-                        fontWeight: 600,
-                        border: `1px solid ${getRoleColor(userRol)}40`
+                        fontWeight: 650,
+                        border: `1px solid ${getRoleColor(userRol)}30`
                       }} 
                     />
                   </TableCell>
-                  <TableCell sx={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <TableCell sx={{ borderBottom: '1px solid #f1efe9' }}>
                     <Chip 
                       label={userEstado} 
                       size="small" 
                       sx={{ 
-                        background: userEstado === 'Activo' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)', 
-                        color: userEstado === 'Activo' ? '#34d399' : '#f87171',
-                        fontWeight: 500
+                        background: userEstado === 'Activo' ? 'rgba(22, 163, 74, 0.12)' : 'rgba(220, 38, 38, 0.12)', 
+                        color: userEstado === 'Activo' ? '#16a34a' : '#dc2626',
+                        fontWeight: 600
                       }} 
                     />
                   </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <TableCell align="center" sx={{ borderBottom: '1px solid #f1efe9' }}>
                     <IconButton 
                       onClick={() => handleEditClick(row)}
-                      sx={{ color: '#94a3b8', '&:hover': { color: '#60a5fa', background: 'rgba(96, 165, 250, 0.1)' } }}
+                      sx={{ color: '#8c7d70', '&:hover': { color: '#d97706', background: 'rgba(217, 119, 6, 0.08)' } }}
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton 
                       onClick={() => handleDeleteClick(row.id)}
-                      sx={{ color: '#94a3b8', '&:hover': { color: '#f87171', background: 'rgba(248, 113, 113, 0.1)' } }}
+                      sx={{ color: '#8c7d70', '&:hover': { color: '#dc2626', background: 'rgba(220, 38, 38, 0.08)' } }}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -272,16 +271,15 @@ const UsersDashboard: React.FC = () => {
         slotProps={{
           paper: {
             sx: {
-              background: 'var(--bg-panel)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: '#fcfbfa',
+              border: '1px solid #eadec9',
               borderRadius: '16px',
-              color: '#fff'
+              color: '#4a3e3d'
             }
           }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 700, borderBottom: '1px solid rgba(255,255,255,0.1)', pb: 2 }}>
+        <DialogTitle sx={{ fontWeight: 700, borderBottom: '1px solid #eadec9', pb: 2, color: '#4a3e3d' }}>
           {editingUser ? `Editar Usuario: ${editingUser.username}` : 'Registrar Nuevo Usuario'}
         </DialogTitle>
         <DialogContent sx={{ pt: 3 }}>
@@ -335,15 +333,15 @@ const UsersDashboard: React.FC = () => {
             </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions sx={{ borderTop: '1px solid rgba(255,255,255,0.1)', px: 3, py: 2 }}>
-          <Button onClick={() => setOpenModal(false)} sx={{ color: '#cbd5e1' }}>
+        <DialogActions sx={{ borderTop: '1px solid #eadec9', px: 3, py: 2 }}>
+          <Button onClick={() => setOpenModal(false)} sx={{ color: '#8a7b6e' }}>
             Cancelar
           </Button>
           <Button 
             onClick={handleSaveUser} 
             variant="contained" 
             startIcon={<SaveIcon />}
-            sx={{ bgcolor: 'var(--primary)', '&:hover': { bgcolor: 'var(--primary-hover)' } }}
+            sx={{ bgcolor: '#d97706', '&:hover': { bgcolor: '#b45309' } }}
           >
             {editingUser ? 'Guardar Cambios' : 'Guardar Usuario'}
           </Button>

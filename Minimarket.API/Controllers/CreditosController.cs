@@ -42,6 +42,31 @@ namespace Minimarket.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("clientes")]
+        public async Task<IActionResult> RegistrarCliente([FromBody] RegistrarClienteRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Nombre) || string.IsNullOrWhiteSpace(request.Documento))
+            {
+                return BadRequest("Nombre y Documento son requeridos.");
+            }
+
+            try
+            {
+                var cliente = await _creditoService.RegistrarClienteAsync(request.Nombre, request.Documento, request.LimiteCredito);
+                return Ok(cliente);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+    }
+
+    public class RegistrarClienteRequest
+    {
+        public string Nombre { get; set; } = string.Empty;
+        public string Documento { get; set; } = string.Empty;
+        public decimal LimiteCredito { get; set; } = 100;
     }
 
     public class RegistrarAbonoRequest

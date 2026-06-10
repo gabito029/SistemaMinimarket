@@ -47,5 +47,26 @@ namespace Minimarket.Infrastructure.Services
 
             return abono;
         }
+
+        public async Task<Cliente> RegistrarClienteAsync(string nombre, string documento, decimal limiteCredito)
+        {
+            var existente = await _context.Clientes.FirstOrDefaultAsync(c => c.Documento == documento);
+            if (existente != null)
+            {
+                throw new Exception($"El cliente con DNI/RUC {documento} ya está registrado.");
+            }
+
+            var cliente = new Cliente
+            {
+                Nombre = nombre,
+                Documento = documento,
+                LimiteCredito = limiteCredito,
+                SaldoDeudor = 0
+            };
+
+            _context.Clientes.Add(cliente);
+            await _context.SaveChangesAsync();
+            return cliente;
+        }
     }
 }

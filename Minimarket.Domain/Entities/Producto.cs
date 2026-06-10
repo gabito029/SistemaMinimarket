@@ -19,7 +19,7 @@ public partial class Producto
 
     public int StockMinimo { get; set; }
 
-    public DateOnly? FechaVencimiento { get; set; }
+    public DateTime? FechaVencimiento { get; set; }
 
     public int CategoriaId { get; set; }
 

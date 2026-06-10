@@ -11,6 +11,10 @@ public partial class Proveedor
 
     public string RazonSocial { get; set; } = null!;
 
+    public string? Telefono { get; set; }
+
+    public string? Direccion { get; set; }
+
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();
 
     public virtual ICollection<CuentaPorPagar> CuentaPorPagars { get; set; } = new List<CuentaPorPagar>();

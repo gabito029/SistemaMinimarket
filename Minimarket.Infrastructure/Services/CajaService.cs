@@ -30,6 +30,19 @@ namespace Minimarket.Infrastructure.Services
             return sesion;
         }
 
+        public async Task<SesionCaja> AbrirCajaConUsuarioAsync(decimal montoApertura, int usuarioId)
+        {
+            var sesion = new SesionCaja
+            {
+                FechaApertura = DateTime.Now,
+                MontoApertura = montoApertura,
+                UsuarioId = usuarioId
+            };
+            _context.SesionCajas.Add(sesion);
+            await _context.SaveChangesAsync();
+            return sesion;
+        }
+
         public async Task<SesionCaja> CerrarCajaAsync(int id, decimal montoCierreReal)
         {
             var sesion = await _context.SesionCajas.FindAsync(id);
@@ -44,6 +57,7 @@ namespace Minimarket.Infrastructure.Services
         public async Task<SesionCajaDTO?> ObtenerCajaActivaAsync()
         {
             var sesion = await _context.SesionCajas
+                .Include(s => s.Usuario)
                 .Where(s => s.MontoCierreReal == null)
                 .OrderByDescending(s => s.Id)
                 .FirstOrDefaultAsync();
@@ -55,7 +69,9 @@ namespace Minimarket.Infrastructure.Services
                 Id = sesion.Id,
                 FechaApertura = sesion.FechaApertura,
                 MontoApertura = sesion.MontoApertura,
-                MontoCierreReal = sesion.MontoCierreReal
+                MontoCierreReal = sesion.MontoCierreReal,
+                UsuarioId = sesion.UsuarioId,
+                UsuarioNombre = sesion.Usuario?.Nombre
             };
         }
     }

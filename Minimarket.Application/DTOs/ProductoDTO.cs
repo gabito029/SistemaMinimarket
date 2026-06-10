@@ -11,5 +11,6 @@ namespace Minimarket.Application.DTOs
         public int StockMinimo { get; set; }
         public int CategoriaId { get; set; }
         public string? CategoriaNombre { get; set; }
+        public DateTime? FechaVencimiento { get; set; }
     }
 }

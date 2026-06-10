@@ -3,9 +3,5 @@
   <Project Path="Minimarket.Application/Minimarket.Application.csproj" />
   <Project Path="Minimarket.Domain/Minimarket.Domain.csproj" />
   <Project Path="Minimarket.Infrastructure/Minimarket.Infrastructure.csproj" />
-  <Project Path="Minimarket.Pruebas.Tests/Minimarket.Pruebas.Tests/Minimarket.Pruebas.Tests.csproj" />
-  <Project Path="Minimarket.UI/Minimarket.UI.esproj">
-    <Build />
-    <Deploy />
-  </Project>
+  <Project Path="Minimarket.Tests/Minimarket.Tests.csproj" />
 </Solution>

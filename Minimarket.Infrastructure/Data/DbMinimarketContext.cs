@@ -7,9 +7,8 @@ namespace Minimarket.Infrastructure.Data;
 
 public partial class DbMinimarketContext : DbContext
 {
-    public DbMinimarketContext()
-    {
-    }
+    //public DbMinimarketContext()
+    
 
     public DbMinimarketContext(DbContextOptions<DbMinimarketContext> options)
         : base(options)
@@ -48,12 +47,9 @@ public partial class DbMinimarketContext : DbContext
 
     public virtual DbSet<Ventum> Venta { get; set; }
 
+    // Puedes dejar el método así de limpio, o eliminarlo por completo si no hay más código dentro.
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-TNME1G3\\MSSQLSERVER02;Database=DB_Minimarket;Trusted_Connection=True;TrustServerCertificate=True");
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -361,6 +357,14 @@ public partial class DbMinimarketContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("ruc");
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("telefono");
+            entity.Property(e => e.Direccion)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("direccion");
         });
 
         modelBuilder.Entity<SesionCaja>(entity =>
@@ -379,6 +383,10 @@ public partial class DbMinimarketContext : DbContext
             entity.Property(e => e.MontoCierreReal)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("montoCierreReal");
+            entity.Property(e => e.UsuarioId).HasColumnName("usuario_id");
+            entity.HasOne(d => d.Usuario).WithMany()
+                .HasForeignKey(d => d.UsuarioId)
+                .HasConstraintName("FK_SesionCaja_Usuario");
         });
 
         modelBuilder.Entity<Usuario>(entity =>

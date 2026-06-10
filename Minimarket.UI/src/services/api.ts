@@ -73,8 +73,8 @@ export const getVentas = async () => {
   return response.data;
 };
 
-export const abrirCaja = async (montoApertura: number) => {
-  const response = await api.post('/Caja/abrir', { montoApertura });
+export const abrirCaja = async (montoApertura: number, usuarioId?: number) => {
+  const response = await api.post('/Caja/abrir', { montoApertura, usuarioId });
   return response.data;
 };
 
@@ -83,8 +83,28 @@ export const cerrarCaja = async (id: number, montoCierreReal: number) => {
   return response.data;
 };
 
+export const getProveedores = async () => {
+  const response = await api.get('/Proveedores');
+  return response.data;
+};
+
+export const registrarCompra = async (compraData: any) => {
+  const response = await api.post('/Proveedores', compraData);
+  return response.data;
+};
+
 export const loginUsuario = async (username: string, contrasena: string) => {
   const response = await api.post('/Usuarios/login', { username, contrasena });
+  return response.data;
+};
+
+export const getDashboardResumen = async () => {
+  const response = await api.get('/Dashboard/resumen');
+  return response.data;
+};
+
+export const aplicarOfertasVencimiento = async () => {
+  const response = await api.post('/Dashboard/aplicar-ofertas-vencimiento');
   return response.data;
 };
 

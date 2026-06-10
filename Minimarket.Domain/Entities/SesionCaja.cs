@@ -13,5 +13,9 @@ public partial class SesionCaja
 
     public decimal? MontoCierreReal { get; set; }
 
+    public int? UsuarioId { get; set; }
+
+    public virtual Usuario? Usuario { get; set; }
+
     public virtual ICollection<Ventum> Venta { get; set; } = new List<Ventum>();
 }

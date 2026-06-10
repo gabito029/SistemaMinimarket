@@ -49,7 +49,8 @@ namespace Minimarket.API.Controllers
                 PrecioVenta = dto.PrecioVenta,
                 StockActual = dto.StockActual,
                 StockMinimo = dto.StockMinimo,
-                CategoriaId = dto.CategoriaId
+                CategoriaId = dto.CategoriaId,
+                FechaVencimiento = dto.FechaVencimiento
             };
 
             var nuevoProducto = await _inventarioService.CrearProductoAsync(producto);

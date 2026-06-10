@@ -19,17 +19,29 @@ namespace Minimarket.Infrastructure.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Ventum>> ObtenerVentasAsync()
+        public async Task<IEnumerable<VentaDTO>> ObtenerVentasAsync()
         {
-            return await _context.Venta.Include(v => v.DetalleVenta).ToListAsync();
+            var ventas = await _context.Venta
+                .Include(v => v.DetalleVenta).ThenInclude(d => d.Producto)
+                .Include(v => v.SesionCaja).ThenInclude(s => s.Usuario)
+                .Include(v => v.Cliente)
+                .ToListAsync();
+
+            return ventas.Select(MapToDTO);
         }
 
-        public async Task<Ventum?> ObtenerVentaPorIdAsync(int id)
+        public async Task<VentaDTO?> ObtenerVentaPorIdAsync(int id)
         {
-            return await _context.Venta.Include(v => v.DetalleVenta).FirstOrDefaultAsync(v => v.Id == id);
+            var venta = await _context.Venta
+                .Include(v => v.DetalleVenta).ThenInclude(d => d.Producto)
+                .Include(v => v.SesionCaja).ThenInclude(s => s.Usuario)
+                .Include(v => v.Cliente)
+                .FirstOrDefaultAsync(v => v.Id == id);
+
+            return venta == null ? null : MapToDTO(venta);
         }
 
-        public async Task<Ventum> RegistrarVentaAsync(VentaCrearDTO ventaDto)
+        public async Task<VentaDTO> RegistrarVentaAsync(VentaCrearDTO ventaDto)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
@@ -68,13 +80,57 @@ namespace Minimarket.Infrastructure.Services
                 venta.Total = total;
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
-                return venta;
+
+                var fullVenta = await ObtenerVentaPorIdAsync(venta.Id);
+                return fullVenta ?? MapToDTO(venta);
             }
             catch
             {
                 await transaction.RollbackAsync();
                 throw;
             }
+        }
+
+        private static VentaDTO MapToDTO(Ventum v)
+        {
+            return new VentaDTO
+            {
+                Id = v.Id,
+                FechaHora = v.FechaHora,
+                MetodoPago = v.MetodoPago,
+                Estado = v.Estado,
+                Total = v.Total,
+                SesionCajaId = v.SesionCajaId,
+                Cliente = v.Cliente == null ? null : new VentaClienteDTO
+                {
+                    Id = v.Cliente.Id,
+                    Nombre = v.Cliente.Nombre,
+                    Documento = v.Cliente.Documento
+                },
+                SesionCaja = v.SesionCaja == null ? null : new VentaSesionCajaDTO
+                {
+                    Id = v.SesionCaja.Id,
+                    Usuario = v.SesionCaja.Usuario == null ? null : new VentaUsuarioDTO
+                    {
+                        Id = v.SesionCaja.Usuario.Id,
+                        Nombre = v.SesionCaja.Usuario.Nombre,
+                        Username = v.SesionCaja.Usuario.Username
+                    }
+                },
+                DetalleVenta = v.DetalleVenta.Select(d => new VentaDetalleDTO
+                {
+                    ProductoId = d.ProductoId,
+                    Cantidad = d.Cantidad,
+                    PrecioUnitario = d.PrecioUnitario,
+                    Subtotal = d.Subtotal,
+                    Producto = d.Producto == null ? null : new VentaProductoDTO
+                    {
+                        Id = d.Producto.Id,
+                        Nombre = d.Producto.Nombre,
+                        PrecioVenta = d.Producto.PrecioVenta
+                    }
+                }).ToList()
+            };
         }
     }
 }

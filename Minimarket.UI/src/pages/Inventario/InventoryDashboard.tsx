@@ -43,7 +43,8 @@ const InventoryDashboard: React.FC = () => {
     precioVenta: 0,
     stockActual: 0,
     stockMinimo: 5,
-    categoriaId: ''
+    categoriaId: '',
+    fechaVencimiento: ''
   });
 
   const loadData = async () => {
@@ -92,7 +93,8 @@ const InventoryDashboard: React.FC = () => {
         precioVenta: Number(productForm.precioVenta),
         stockActual: Number(productForm.stockActual),
         stockMinimo: Number(productForm.stockMinimo),
-        categoriaId: Number(productForm.categoriaId)
+        categoriaId: Number(productForm.categoriaId),
+        fechaVencimiento: productForm.fechaVencimiento ? productForm.fechaVencimiento : null
       };
 
       if (editingProduct) {
@@ -110,7 +112,8 @@ const InventoryDashboard: React.FC = () => {
         precioVenta: 0,
         stockActual: 0,
         stockMinimo: 5,
-        categoriaId: ''
+        categoriaId: '',
+        fechaVencimiento: ''
       });
       loadData();
     } catch (err: any) {
@@ -128,7 +131,8 @@ const InventoryDashboard: React.FC = () => {
       precioVenta: prod.precioVenta,
       stockActual: prod.stockActual,
       stockMinimo: prod.stockMinimo || 5,
-      categoriaId: prod.categoriaId ? prod.categoriaId.toString() : ''
+      categoriaId: prod.categoriaId ? prod.categoriaId.toString() : '',
+      fechaVencimiento: prod.fechaVencimiento ? prod.fechaVencimiento.split('T')[0] : ''
     });
     setOpenProductModal(true);
   };
@@ -198,13 +202,13 @@ const InventoryDashboard: React.FC = () => {
   };
 
   const commonTextFieldSx = {
-    '& .MuiInputLabel-root': { color: '#94a3b8' },
-    '& .MuiOutlinedInput-input': { color: 'white' },
-    '& .MuiSelect-select': { color: 'white' },
+    '& .MuiInputLabel-root': { color: '#8a7b6e' },
+    '& .MuiOutlinedInput-input': { color: '#4a3e3d' },
+    '& .MuiSelect-select': { color: '#4a3e3d' },
     '& .MuiOutlinedInput-root': { 
-      '& fieldset': { borderColor: 'rgba(255,255,255,0.2)' },
-      '&:hover fieldset': { borderColor: '#3b82f6' },
-      '&.Mui-focused fieldset': { borderColor: '#3b82f6' }
+      '& fieldset': { borderColor: '#eadec9' },
+      '&:hover fieldset': { borderColor: '#d97706' },
+      '&.Mui-focused fieldset': { borderColor: '#d97706' }
     }
   };
 
@@ -213,10 +217,10 @@ const InventoryDashboard: React.FC = () => {
       {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: '#fff', mb: 1 }}>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: '#4a3e3d', mb: 1 }}>
             Gestión de Inventario
           </Typography>
-          <Typography variant="body1" sx={{ color: '#94a3b8' }}>
+          <Typography variant="body1" sx={{ color: '#8a7b6e' }}>
             Control y administración de productos y existencias.
           </Typography>
         </Box>
@@ -228,15 +232,15 @@ const InventoryDashboard: React.FC = () => {
             onClick={exportToCSV}
             disabled={products.length === 0}
             sx={{
-              borderColor: 'rgba(52, 211, 153, 0.4)',
-              color: '#34d399',
+              borderColor: 'rgba(22, 163, 74, 0.4)',
+              color: '#16a34a',
               px: 2.5, py: 1.2,
               borderRadius: '12px',
               textTransform: 'none',
               fontWeight: 600,
               '&:hover': {
-                borderColor: '#34d399',
-                background: 'rgba(52, 211, 153, 0.08)'
+                borderColor: '#16a34a',
+                background: 'rgba(22, 163, 74, 0.08)'
               }
             }}
           >
@@ -247,15 +251,15 @@ const InventoryDashboard: React.FC = () => {
             startIcon={<AddIcon />}
             onClick={() => setOpenCategoryModal(true)}
             sx={{ 
-              color: '#3b82f6',
-              borderColor: 'rgba(59, 130, 246, 0.4)',
+              color: '#d97706',
+              borderColor: 'rgba(217, 119, 6, 0.4)',
               px: 2.5, py: 1.2,
               borderRadius: '12px',
               textTransform: 'none',
               fontWeight: 600,
               '&:hover': {
-                borderColor: '#3b82f6',
-                background: 'rgba(59, 130, 246, 0.08)'
+                borderColor: '#d97706',
+                background: 'rgba(217, 119, 6, 0.08)'
               }
             }}
           >
@@ -274,21 +278,22 @@ const InventoryDashboard: React.FC = () => {
                 precioVenta: 0,
                 stockActual: 0,
                 stockMinimo: 5,
-                categoriaId: ''
+                categoriaId: '',
+                fechaVencimiento: ''
               });
               setOpenProductModal(true);
             }}
             sx={{ 
-              bgcolor: 'var(--primary)',
+              bgcolor: '#d97706',
               px: 3, py: 1.5,
               borderRadius: '12px',
               textTransform: 'none',
               fontWeight: 600,
-              boxShadow: '0 4px 14px 0 rgba(59, 130, 246, 0.39)',
+              boxShadow: '0 4px 14px 0 rgba(217, 119, 6, 0.25)',
               '&:hover': {
-                bgcolor: 'var(--primary-hover)',
+                bgcolor: '#b45309',
                 transform: 'translateY(-2px)',
-                boxShadow: '0 6px 20px rgba(59, 130, 246, 0.4)'
+                boxShadow: '0 6px 20px rgba(217, 119, 6, 0.3)'
               },
               transition: 'all 0.3s ease'
             }}
@@ -300,33 +305,32 @@ const InventoryDashboard: React.FC = () => {
 
       {/* Main Table */}
       <TableContainer component={Paper} sx={{ 
-        background: 'var(--bg-panel)', 
-        backdropFilter: 'blur(16px)',
+        background: '#fff', 
         borderRadius: '16px',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+        border: '1px solid #eadec9',
+        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
       }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Código</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Producto</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>Categoría</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }} align="center">Stock Actual</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }} align="right">Precio Venta</TableCell>
-              <TableCell sx={{ color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.1)' }} align="center">Acciones</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }}>Código</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }}>Producto</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }}>Categoría</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }} align="center">Stock Actual</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }} align="right">Precio Venta</TableCell>
+              <TableCell sx={{ color: '#8a7b6e', fontWeight: 600, borderBottom: '1px solid #eadec9' }} align="center">Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <TableRow>
                 <TableCell colSpan={6} align="center" sx={{ py: 4, borderBottom: 0 }}>
-                  <CircularProgress sx={{ color: 'var(--primary)' }} />
+                  <CircularProgress sx={{ color: '#d97706' }} />
                 </TableCell>
               </TableRow>
             ) : products.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} align="center" sx={{ py: 4, color: '#94a3b8', borderBottom: 0 }}>
+                <TableCell colSpan={6} align="center" sx={{ py: 4, color: '#8a7b6e', borderBottom: 0 }}>
                   No hay productos registrados en la base de datos.
                 </TableCell>
               </TableRow>
@@ -338,50 +342,50 @@ const InventoryDashboard: React.FC = () => {
                   sx={{ 
                     '&:last-child td, &:last-child th': { border: 0 },
                     transition: 'background 0.2s',
-                    '&:hover': { background: 'rgba(255, 255, 255, 0.03)' }
+                    '&:hover': { background: '#fdfbf7' }
                   }}
                 >
-                  <TableCell sx={{ color: '#e2e8f0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.codigoBarras || '-'}</TableCell>
-                  <TableCell sx={{ color: '#fff', fontWeight: 500, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>{row.nombre}</TableCell>
-                  <TableCell sx={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <Chip label={catObj?.nombre || 'General'} size="small" sx={{ background: 'rgba(255, 255, 255, 0.1)', color: '#cbd5e1' }} />
+                  <TableCell sx={{ color: '#6b5e51', borderBottom: '1px solid #f1efe9' }}>{row.codigoBarras || '-'}</TableCell>
+                  <TableCell sx={{ color: '#4a3e3d', fontWeight: 600, borderBottom: '1px solid #f1efe9' }}>{row.nombre}</TableCell>
+                  <TableCell sx={{ borderBottom: '1px solid #f1efe9' }}>
+                    <Chip label={catObj?.nombre || 'General'} size="small" sx={{ background: '#fcfbfa', color: '#6b5e51', border: '1px solid #eadec9' }} />
                   </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <TableCell align="center" sx={{ borderBottom: '1px solid #f1efe9' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
                       {row.stockActual <= row.stockMinimo && (
-                        <WarningAmberIcon sx={{ color: '#fbbf24', fontSize: 18 }} />
+                        <WarningAmberIcon sx={{ color: '#d97706', fontSize: 18 }} />
                       )}
                       <Typography sx={{ 
-                        color: row.stockActual <= row.stockMinimo ? '#fbbf24' : '#e2e8f0',
-                        fontWeight: row.stockActual <= row.stockMinimo ? 700 : 400
+                        color: row.stockActual <= row.stockMinimo ? '#dc2626' : '#4a3e3d',
+                        fontWeight: row.stockActual <= row.stockMinimo ? 700 : 500
                       }}>
                         {row.stockActual}
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell align="right" sx={{ color: '#e2e8f0', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <TableCell align="right" sx={{ color: '#4a3e3d', fontWeight: 700, borderBottom: '1px solid #f1efe9' }}>
                     S/ {row.precioVenta.toFixed(2)}
                   </TableCell>
-                  <TableCell align="center" sx={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <TableCell align="center" sx={{ borderBottom: '1px solid #f1efe9' }}>
                     <IconButton 
                       title="Reponer / Ajustar Stock"
                       onClick={() => {
                         setSelectedProduct(row);
                         setOpenStockModal(true);
                       }}
-                      sx={{ color: '#34d399', '&:hover': { color: '#10b981', background: 'rgba(52, 211, 153, 0.1)' } }}
+                      sx={{ color: '#16a34a', '&:hover': { color: '#15803d', background: 'rgba(22, 163, 74, 0.08)' } }}
                     >
                       <SwapVertIcon fontSize="small" />
                     </IconButton>
                     <IconButton 
                       onClick={() => handleEditClick(row)}
-                      sx={{ color: '#94a3b8', '&:hover': { color: '#60a5fa', background: 'rgba(96, 165, 250, 0.1)' } }}
+                      sx={{ color: '#8c7d70', '&:hover': { color: '#d97706', background: 'rgba(217, 119, 6, 0.08)' } }}
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton 
                       onClick={() => handleDeleteProduct(row.id)}
-                      sx={{ color: '#94a3b8', '&:hover': { color: '#f87171', background: 'rgba(248, 113, 113, 0.1)' } }}
+                      sx={{ color: '#8c7d70', '&:hover': { color: '#dc2626', background: 'rgba(220, 38, 38, 0.08)' } }}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -400,20 +404,19 @@ const InventoryDashboard: React.FC = () => {
         slotProps={{
           paper: {
             sx: {
-              background: 'var(--bg-panel)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: '#fcfbfa',
+              border: '1px solid #eadec9',
               borderRadius: '16px',
-              color: '#fff'
+              color: '#4a3e3d'
             }
           }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 700, pb: 1 }}>
+        <DialogTitle sx={{ fontWeight: 700, pb: 1, color: '#4a3e3d' }}>
           Ajustar Stock: {selectedProduct?.nombre}
         </DialogTitle>
         <DialogContent>
-          <Typography variant="body2" sx={{ color: '#94a3b8', mb: 3 }}>
+          <Typography variant="body2" sx={{ color: '#8a7b6e', mb: 3 }}>
             Stock actual: <strong>{selectedProduct?.stockActual}</strong> unidades.
           </Typography>
           <Grid container spacing={3}>
@@ -455,14 +458,14 @@ const InventoryDashboard: React.FC = () => {
           </Grid>
         </DialogContent>
         <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={() => setOpenStockModal(false)} sx={{ color: '#cbd5e1' }}>
+          <Button onClick={() => setOpenStockModal(false)} sx={{ color: '#8a7b6e' }}>
             Cancelar
           </Button>
           <Button 
             onClick={handleAdjustStock} 
             variant="contained" 
             startIcon={<SaveIcon />}
-            sx={{ bgcolor: 'var(--primary)', '&:hover': { bgcolor: 'var(--primary-hover)' } }}
+            sx={{ bgcolor: '#d97706', '&:hover': { bgcolor: '#b45309' } }}
           >
             Guardar Ajuste
           </Button>
@@ -478,16 +481,15 @@ const InventoryDashboard: React.FC = () => {
         slotProps={{
           paper: {
             sx: {
-              background: 'var(--bg-panel)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: '#fcfbfa',
+              border: '1px solid #eadec9',
               borderRadius: '16px',
-              color: '#fff'
+              color: '#4a3e3d'
             }
           }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 700, borderBottom: '1px solid rgba(255,255,255,0.1)', pb: 2 }}>
+        <DialogTitle sx={{ fontWeight: 700, borderBottom: '1px solid #eadec9', pb: 2, color: '#4a3e3d' }}>
           {editingProduct ? `Editar Producto: ${editingProduct.nombre}` : 'Registrar Nuevo Producto'}
         </DialogTitle>
         <DialogContent sx={{ pt: 3 }}>
@@ -551,7 +553,7 @@ const InventoryDashboard: React.FC = () => {
                 variant="outlined"
                 slotProps={{
                   input: {
-                    startAdornment: <InputAdornment position="start" sx={{ '& .MuiTypography-root': { color: '#94a3b8' } }}>S/</InputAdornment>,
+                    startAdornment: <InputAdornment position="start" sx={{ '& .MuiTypography-root': { color: '#8a7b6e' } }}>S/</InputAdornment>,
                   }
                 }}
                 value={productForm.precioCosto}
@@ -567,7 +569,7 @@ const InventoryDashboard: React.FC = () => {
                 variant="outlined"
                 slotProps={{
                   input: {
-                    startAdornment: <InputAdornment position="start" sx={{ '& .MuiTypography-root': { color: '#94a3b8' } }}>S/</InputAdornment>,
+                    startAdornment: <InputAdornment position="start" sx={{ '& .MuiTypography-root': { color: '#8a7b6e' } }}>S/</InputAdornment>,
                   }
                 }}
                 value={productForm.precioVenta}
@@ -586,16 +588,30 @@ const InventoryDashboard: React.FC = () => {
                 sx={commonTextFieldSx}
               />
             </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Fecha de Vencimiento"
+                type="date"
+                fullWidth
+                variant="outlined"
+                slotProps={{
+                  inputLabel: { shrink: true }
+                }}
+                value={productForm.fechaVencimiento}
+                onChange={e => setProductForm(prev => ({ ...prev, fechaVencimiento: e.target.value }))}
+                sx={commonTextFieldSx}
+              />
+            </Grid>
           </Grid>
         </DialogContent>
-        <DialogActions sx={{ borderTop: '1px solid rgba(255,255,255,0.1)', px: 3, py: 2 }}>
-          <Button onClick={() => setOpenProductModal(false)} sx={{ color: '#cbd5e1' }}>
+        <DialogActions sx={{ borderTop: '1px solid #eadec9', px: 3, py: 2 }}>
+          <Button onClick={() => setOpenProductModal(false)} sx={{ color: '#8a7b6e' }}>
             Cancelar
           </Button>
           <Button 
             onClick={handleSaveProduct} 
             variant="contained" 
-            sx={{ bgcolor: 'var(--primary)', '&:hover': { bgcolor: 'var(--primary-hover)' } }}
+            sx={{ bgcolor: '#d97706', '&:hover': { bgcolor: '#b45309' } }}
           >
             {editingProduct ? 'Guardar Cambios' : 'Guardar Producto'}
           </Button>
@@ -609,18 +625,17 @@ const InventoryDashboard: React.FC = () => {
         slotProps={{
           paper: {
             sx: {
-              background: 'var(--bg-panel)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: '#fcfbfa',
+              border: '1px solid #eadec9',
               borderRadius: '16px',
-              color: '#fff'
+              color: '#4a3e3d'
             }
           }
         }}
       >
-        <DialogTitle sx={{ fontWeight: 700, pb: 1 }}>Nueva Categoría</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 700, pb: 1, color: '#4a3e3d' }}>Nueva Categoría</DialogTitle>
         <DialogContent>
-          <Typography variant="body2" sx={{ color: '#94a3b8', mb: 2 }}>
+          <Typography variant="body2" sx={{ color: '#8a7b6e', mb: 2 }}>
             Crea clasificaciones para organizar tus productos.
           </Typography>
           <TextField
@@ -634,13 +649,13 @@ const InventoryDashboard: React.FC = () => {
           />
         </DialogContent>
         <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button onClick={() => setOpenCategoryModal(false)} sx={{ color: '#cbd5e1' }}>
+          <Button onClick={() => setOpenCategoryModal(false)} sx={{ color: '#8a7b6e' }}>
             Cancelar
           </Button>
           <Button 
             onClick={handleCreateCategory} 
             variant="contained" 
-            sx={{ bgcolor: 'var(--primary)', '&:hover': { bgcolor: 'var(--primary-hover)' } }}
+            sx={{ bgcolor: '#d97706', '&:hover': { bgcolor: '#b45309' } }}
           >
             Crear
           </Button>

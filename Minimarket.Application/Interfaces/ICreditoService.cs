@@ -9,5 +9,6 @@ namespace Minimarket.Application.Interfaces
         Task<IEnumerable<Cliente>> ObtenerClientesAsync();
         Task<IEnumerable<CreditoCliente>> ObtenerCreditosPorClienteAsync(int clienteId);
         Task<AbonoCliente> RegistrarAbonoAsync(int creditoId, decimal monto);
+        Task<Cliente> RegistrarClienteAsync(string nombre, string documento, decimal limiteCredito);
     }
 }

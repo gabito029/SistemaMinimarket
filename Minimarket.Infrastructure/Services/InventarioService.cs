@@ -30,7 +30,8 @@ namespace Minimarket.Infrastructure.Services
                 PrecioVenta = p.PrecioVenta,
                 StockActual = p.StockActual,
                 StockMinimo = p.StockMinimo,
-                CategoriaId = p.CategoriaId
+                CategoriaId = p.CategoriaId,
+                FechaVencimiento = p.FechaVencimiento
             }).ToListAsync();
         }
 
@@ -38,14 +39,14 @@ namespace Minimarket.Infrastructure.Services
         {
             var p = await _context.Productos.FindAsync(id);
             if (p == null) return null;
-            return new ProductoDTO { Id = p.Id, Nombre = p.Nombre, PrecioVenta = p.PrecioVenta, StockActual = p.StockActual };
+            return new ProductoDTO { Id = p.Id, Nombre = p.Nombre, PrecioVenta = p.PrecioVenta, StockActual = p.StockActual, PrecioCosto = p.PrecioCosto, FechaVencimiento = p.FechaVencimiento };
         }
 
         public async Task<ProductoDTO?> ObtenerProductoPorCodigoAsync(string codigo)
         {
             var p = await _context.Productos.FirstOrDefaultAsync(x => x.CodigoBarras == codigo);
             if (p == null) return null;
-            return new ProductoDTO { Id = p.Id, Nombre = p.Nombre, PrecioVenta = p.PrecioVenta, StockActual = p.StockActual };
+            return new ProductoDTO { Id = p.Id, Nombre = p.Nombre, PrecioVenta = p.PrecioVenta, StockActual = p.StockActual, PrecioCosto = p.PrecioCosto, FechaVencimiento = p.FechaVencimiento };
         }
 
         public async Task<Producto> CrearProductoAsync(Producto producto)
@@ -66,6 +67,7 @@ namespace Minimarket.Infrastructure.Services
             p.PrecioVenta = dto.PrecioVenta;
             p.StockMinimo = dto.StockMinimo;
             p.CategoriaId = dto.CategoriaId;
+            p.FechaVencimiento = dto.FechaVencimiento;
             // No actualizamos StockActual aquí para evitar sobrescribir ventas/ajustes concurrentes.
             
             await _context.SaveChangesAsync();

@@ -81,7 +81,11 @@ app.MapGet("/weatherforecast", () =>
 
 app.Run();
 
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+
+[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+public partial class Program { }

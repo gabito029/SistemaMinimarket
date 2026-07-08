@@ -28,7 +28,7 @@ namespace Minimarket.Pruebas.Tests.Controllers
         public async Task RegistrarVenta_Success_ReturnsOk()
         {
             var dto = new VentaCrearDTO();
-            var returnedVenta = new Ventum { Id = 1, Total = 50 };
+            var returnedVenta = new VentaDTO { Id = 1, Total = 50 };
             _ventasServiceMock.Setup(s => s.RegistrarVentaAsync(dto)).ReturnsAsync(returnedVenta);
 
             var result = await _controller.RegistrarVenta(dto);
@@ -54,7 +54,7 @@ namespace Minimarket.Pruebas.Tests.Controllers
         [TestMethod]
         public async Task ObtenerVentas_ReturnsOk()
         {
-            var list = new List<Ventum> { new Ventum { Id = 1 } };
+            var list = new List<VentaDTO> { new VentaDTO { Id = 1 } };
             _ventasServiceMock.Setup(s => s.ObtenerVentasAsync()).ReturnsAsync(list);
 
             var result = await _controller.ObtenerVentas();
@@ -66,7 +66,7 @@ namespace Minimarket.Pruebas.Tests.Controllers
         [TestMethod]
         public async Task ObtenerVentaPorId_Existing_ReturnsOk()
         {
-            var venta = new Ventum { Id = 1 };
+            var venta = new VentaDTO { Id = 1 };
             _ventasServiceMock.Setup(s => s.ObtenerVentaPorIdAsync(1)).ReturnsAsync(venta);
 
             var result = await _controller.ObtenerVentaPorId(1);
@@ -78,7 +78,7 @@ namespace Minimarket.Pruebas.Tests.Controllers
         [TestMethod]
         public async Task ObtenerVentaPorId_NonExisting_ReturnsNotFound()
         {
-            _ventasServiceMock.Setup(s => s.ObtenerVentaPorIdAsync(99)).ReturnsAsync((Ventum?)null);
+            _ventasServiceMock.Setup(s => s.ObtenerVentaPorIdAsync(99)).ReturnsAsync((VentaDTO?)null);
 
             var result = await _controller.ObtenerVentaPorId(99);
 

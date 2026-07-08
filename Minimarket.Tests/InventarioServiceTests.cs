@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Microsoft.EntityFrameworkCore;
 using Minimarket.Infrastructure.Data;
 using Minimarket.Infrastructure.Services;
@@ -7,7 +7,6 @@ using System.Linq;
 
 namespace Minimarket.Tests;
 
-[TestClass]
 public class InventarioServiceTests
 {
     private DbMinimarketContext CreateInMemoryContext()
@@ -18,7 +17,7 @@ public class InventarioServiceTests
         return new DbMinimarketContext(options);
     }
 
-    [TestMethod]
+    [Fact]
     public async Task ObtenerProductosAsync_ReturnsProducts()
     {
         using var context = CreateInMemoryContext();
@@ -29,16 +28,16 @@ public class InventarioServiceTests
         var service = new InventarioService(context);
         var result = await service.ObtenerProductosAsync();
 
-        Assert.IsNotNull(result);
-        Assert.AreEqual(2, result.Count());
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Count());
     }
 
-    [TestMethod]
+    [Fact]
     public async Task ObtenerProductoPorIdAsync_NotFound_ReturnsNull()
     {
         using var context = CreateInMemoryContext();
         var service = new InventarioService(context);
         var res = await service.ObtenerProductoPorIdAsync(999);
-        Assert.IsNull(res);
+        Assert.Null(res);
     }
 }

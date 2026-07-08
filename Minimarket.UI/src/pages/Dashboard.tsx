@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const handleAplicarOfertas = async () => {
-    if (!window.confirm("¿Estás seguro de que deseas poner en oferta (a precio de costo) todos los productos que vencen en los próximos 30 días? Esta acción modificará sus precios de venta en el catálogo.")) {
+    if (!window.confirm("¿Estás seguro de que deseas poner en oferta todos los productos que vencen en los próximos 30 días? Esta acción modificará sus precios de venta en el catálogo.")) {
       return;
     }
 

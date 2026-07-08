@@ -1,0 +1,37 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: minimarket-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Password123
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+  backend:
+    build:
+      context: .
+      dockerfile: Minimarket.API/Dockerfile
+    container_name: minimarket-api
+    ports:
+      - "5288:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=DB_Minimarket;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./Minimarket.UI
+      dockerfile: Dockerfile
+    container_name: minimarket-ui
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mssql-data:

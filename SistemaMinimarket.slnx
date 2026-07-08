@@ -4,4 +4,6 @@
   <Project Path="Minimarket.Domain/Minimarket.Domain.csproj" />
   <Project Path="Minimarket.Infrastructure/Minimarket.Infrastructure.csproj" />
   <Project Path="Minimarket.Tests/Minimarket.Tests.csproj" />
+  <Project Path="Minimarket.Pruebas.Tests/Minimarket.Pruebas.Tests/Minimarket.Pruebas.Tests.csproj" />
+  <Project Path="PruebrasIntegracion/PruebrasIntegracion.csproj" />
 </Solution>

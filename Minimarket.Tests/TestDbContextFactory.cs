@@ -6,10 +6,11 @@ namespace Minimarket.Tests
 {
     public static class TestDbContextFactory
     {
-        public static DbMinimarketContext CreateInMemoryContext(string dbName = null)
+        public static DbMinimarketContext CreateInMemoryContext(string? dbName = null)
         {
             var options = new DbContextOptionsBuilder<DbMinimarketContext>()
                 .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                .ConfigureWarnings(x => x.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.InMemoryEventId.TransactionIgnoredWarning))
                 .Options;
 
             return new DbMinimarketContext(options);

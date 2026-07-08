@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <!-- Configuración para el motor nativo de Cobertura de Código de Visual Studio -->
+      <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0" assemblyQualifiedName="Microsoft.VisualStudio.Coverage.DynamicCoverageDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+        <Configuration>
+          <CodeCoverage>
+            <ModulePaths>
+              <Exclude>
+                <ModulePath>.*[Tt]ests.*</ModulePath>
+                <ModulePath>.*[Pp]ruebas.*</ModulePath>
+                <ModulePath>.*[Ii]ntegracion.*</ModulePath>
+              </Exclude>
+            </ModulePaths>
+            <Functions>
+              <Exclude>
+                <Function>.*Microsoft\.AspNetCore\.OpenApi\.Generated.*</Function>
+                <Function>.*System\.Runtime\.CompilerServices.*</Function>
+                <Function>.*Program.*</Function>
+                <Function>.*WeatherForecast.*</Function>
+              </Exclude>
+            </Functions>
+          </CodeCoverage>
+        </Configuration>
+      </DataCollector>
+
+      <!-- Configuración para dotnet test / Coverlet (XPlat Code Coverage) -->
+      <DataCollector friendlyName="XPlat Code Coverage" uri="datacollector://Microsoft/XPlatCodeCoverage/1.0">
+        <Configuration>
+          <Format>cobertura</Format>
+          <!-- Excluir assemblies de test y namespaces autogenerados -->
+          <Exclude>[Minimarket.Tests]*,[Minimarket.Pruebas.Tests]*,[PruebrasIntegracion]*,[*]Microsoft.AspNetCore.OpenApi.Generated.*,[*]System.Runtime.CompilerServices.*,[*]Program,[*]WeatherForecast</Exclude>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

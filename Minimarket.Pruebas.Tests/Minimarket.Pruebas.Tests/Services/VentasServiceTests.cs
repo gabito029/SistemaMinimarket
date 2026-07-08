@@ -28,7 +28,9 @@ namespace Minimarket.Pruebas.Tests.Services
         public async Task ObtenerVentasAsync_ShouldReturnVentas()
         {
             var context = GetContext();
-            context.Venta.Add(new Ventum { Id = 1, Total = 100, Estado = "Completada", MetodoPago = "Efectivo" });
+            var sesion = new SesionCaja { Id = 1, MontoApertura = 500, FechaApertura = DateTime.Now };
+            context.SesionCajas.Add(sesion);
+            context.Venta.Add(new Ventum { Id = 1, Total = 100, Estado = "Completada", MetodoPago = "Efectivo", SesionCajaId = 1 });
             await context.SaveChangesAsync();
 
             var service = new VentasService(context);
@@ -41,7 +43,9 @@ namespace Minimarket.Pruebas.Tests.Services
         public async Task ObtenerVentaPorIdAsync_ShouldReturnVenta()
         {
             var context = GetContext();
-            context.Venta.Add(new Ventum { Id = 1, Total = 100, Estado = "Completada", MetodoPago = "Efectivo" });
+            var sesion = new SesionCaja { Id = 1, MontoApertura = 500, FechaApertura = DateTime.Now };
+            context.SesionCajas.Add(sesion);
+            context.Venta.Add(new Ventum { Id = 1, Total = 100, Estado = "Completada", MetodoPago = "Efectivo", SesionCajaId = 1 });
             await context.SaveChangesAsync();
 
             var service = new VentasService(context);

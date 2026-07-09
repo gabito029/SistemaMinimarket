@@ -53,6 +53,14 @@ namespace Minimarket.Infrastructure.Services
         {
             _context.Productos.Add(producto);
             await _context.SaveChangesAsync();
+
+            // Si el código de barras está vacío o es nulo, el sistema genera automáticamente un ID/Código predefinido
+            if (string.IsNullOrWhiteSpace(producto.CodigoBarras))
+            {
+                producto.CodigoBarras = $"PROD-{producto.Id:D4}"; // Ej: PROD-0001, PROD-0002...
+                await _context.SaveChangesAsync();
+            }
+
             return producto;
         }
 

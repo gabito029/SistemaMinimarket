@@ -595,12 +595,16 @@ const InventoryDashboard: React.FC = () => {
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
-                label="Código de Barras"
+                label="Código / Código de Barras"
                 fullWidth
                 variant="outlined"
                 value={productForm.codigoBarras}
                 onChange={e => setProductForm(prev => ({ ...prev, codigoBarras: e.target.value }))}
                 sx={commonTextFieldSx}
+                helperText="Opcional. Si se deja vacío, el sistema asignará un código automático (ej: PROD-0010)."
+                slotProps={{
+                  formHelperText: { sx: { color: '#8a7b6e' } }
+                }}
               />
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>

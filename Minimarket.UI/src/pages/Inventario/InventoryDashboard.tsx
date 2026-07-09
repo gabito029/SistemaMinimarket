@@ -11,6 +11,7 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import SaveIcon from '@mui/icons-material/Save';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import SearchIcon from '@mui/icons-material/Search';
 import { getProductos, getCategorias, crearCategoria, crearProducto, actualizarProducto, eliminarProducto } from '../../services/api';
 import axios from 'axios';
 
@@ -19,6 +20,11 @@ const InventoryDashboard: React.FC = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
+  
+  // Search and filter states
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('todos');
+  const [stockFilter, setStockFilter] = useState('todos'); // 'todos', 'bajo_stock'
   
   // Modals state
   const [openProductModal, setOpenProductModal] = useState(false);
@@ -152,7 +158,7 @@ const InventoryDashboard: React.FC = () => {
   const handleAdjustStock = async () => {
     if (!selectedProduct || stockAdjustment.cantidad <= 0) return;
     try {
-      await axios.post(`http://localhost:5288/api/Inventario/productos/${selectedProduct.id}/ajuste-stock`, {
+      await axios.post(`https://minimarket-api-co8l.onrender.com/api/Inventario/productos/${selectedProduct.id}/ajuste-stock`, {
         cantidad: Number(stockAdjustment.cantidad),
         tipoAjuste: stockAdjustment.tipoAjuste,
         justificacion: stockAdjustment.justificacion
@@ -211,6 +217,23 @@ const InventoryDashboard: React.FC = () => {
       '&.Mui-focused fieldset': { borderColor: '#d97706' }
     }
   };
+
+  // Filter products locally based on searches and dropdowns
+  const filteredProducts = products.filter(p => {
+    const matchesSearch = 
+      p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      (p.codigoBarras && p.codigoBarras.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesCategory = 
+      selectedCategoryFilter === 'todos' || 
+      p.categoriaId?.toString() === selectedCategoryFilter;
+    
+    const matchesStock = 
+      stockFilter === 'todos' || 
+      (stockFilter === 'bajo_stock' && p.stockActual <= p.stockMinimo);
+
+    return matchesSearch && matchesCategory && matchesStock;
+  });
 
   return (
     <Box sx={{ animation: 'fadeIn 0.5s ease-out' }}>
@@ -303,6 +326,71 @@ const InventoryDashboard: React.FC = () => {
         </Box>
       </Box>
 
+      {/* Filtros y Buscador */}
+      <Paper sx={{ 
+        p: 3, 
+        mb: 3, 
+        background: '#fff', 
+        borderRadius: '16px',
+        border: '1px solid #eadec9',
+        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)'
+      }}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid size={{ xs: 12, md: 5 }}>
+            <TextField
+              label="Buscar por nombre o código de barras"
+              fullWidth
+              variant="outlined"
+              size="small"
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              sx={commonTextFieldSx}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: '#8a7b6e' }} />
+                    </InputAdornment>
+                  ),
+                }
+              }}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 3.5 }}>
+            <TextField
+              label="Filtrar por Categoría"
+              select
+              fullWidth
+              variant="outlined"
+              size="small"
+              value={selectedCategoryFilter}
+              onChange={e => setSelectedCategoryFilter(e.target.value)}
+              sx={commonTextFieldSx}
+            >
+              <MenuItem value="todos">Todas las categorías</MenuItem>
+              {categories.map(c => (
+                <MenuItem key={c.id} value={c.id.toString()}>{c.nombre}</MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 3.5 }}>
+            <TextField
+              label="Estado de Stock"
+              select
+              fullWidth
+              variant="outlined"
+              size="small"
+              value={stockFilter}
+              onChange={e => setStockFilter(e.target.value)}
+              sx={commonTextFieldSx}
+            >
+              <MenuItem value="todos">Todos los productos</MenuItem>
+              <MenuItem value="bajo_stock">Stock mínimo / Bajo stock ⚠️</MenuItem>
+            </TextField>
+          </Grid>
+        </Grid>
+      </Paper>
+
       {/* Main Table */}
       <TableContainer component={Paper} sx={{ 
         background: '#fff', 
@@ -328,13 +416,13 @@ const InventoryDashboard: React.FC = () => {
                   <CircularProgress sx={{ color: '#d97706' }} />
                 </TableCell>
               </TableRow>
-            ) : products.length === 0 ? (
+            ) : filteredProducts.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} align="center" sx={{ py: 4, color: '#8a7b6e', borderBottom: 0 }}>
-                  No hay productos registrados en la base de datos.
+                  No se encontraron productos con los filtros aplicados.
                 </TableCell>
               </TableRow>
-            ) : products.map((row) => {
+            ) : filteredProducts.map((row) => {
               const catObj = categories.find(c => c.id === row.categoriaId);
               return (
                 <TableRow

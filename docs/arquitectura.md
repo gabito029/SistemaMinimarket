@@ -1,7 +1,6 @@
 # Arquitectura y Diseño de Base de Datos - Sistema Minimarket
 
-Este documento describe la arquitectura del backend y el esquema detallado de la base de datos del Sistema Minimarket. Está diseñado bajo el método de **Ingeniería Inversa de Requisitos** para garantizar una replicación exacta (100% de fidelidad) del sistema en cualquier entorno.
-
+Este documento describe la arquitectura del backend y el esquema detallado de la base de datos del Sistema Minimarket. 
 ---
 
 ## 1. Arquitectura del Sistema (Clean Architecture)

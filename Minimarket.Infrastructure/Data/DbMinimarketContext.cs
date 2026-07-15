@@ -332,7 +332,9 @@ public partial class DbMinimarketContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("precioVenta");
             entity.Property(e => e.StockActual).HasColumnName("stockActual");
-            entity.Property(e => e.StockMinimo).HasColumnName("stockMinimo");
+            entity.Property(e => e.StockMinimo)
+                .HasColumnName("stockMinimo")
+                .HasDefaultValue(10);
 
             entity.HasOne(d => d.Categoria).WithMany(p => p.Productos)
                 .HasForeignKey(d => d.CategoriaId)

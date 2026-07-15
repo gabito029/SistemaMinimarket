@@ -17,7 +17,8 @@ public partial class Producto
 
     public int StockActual { get; set; }
 
-    public int StockMinimo { get; set; }
+    // Valor por defecto para alertas de stock
+    public int StockMinimo { get; set; } = 10;
 
     public DateTime? FechaVencimiento { get; set; }
 

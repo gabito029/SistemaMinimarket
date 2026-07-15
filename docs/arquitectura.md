@@ -83,7 +83,7 @@ CREATE TABLE [Producto] (
     [precioCosto] DECIMAL(10,2) NOT NULL,
     [precioVenta] DECIMAL(10,2) NOT NULL,
     [stockActual] INT NOT NULL,
-    [stockMinimo] INT NOT NULL,
+    [stockMinimo] INT NOT NULL DEFAULT 10,
     [fechaVencimiento] DATETIME2 NULL,
     [categoria_id] INT NOT NULL,
     CONSTRAINT [PK_Producto] PRIMARY KEY ([id]),

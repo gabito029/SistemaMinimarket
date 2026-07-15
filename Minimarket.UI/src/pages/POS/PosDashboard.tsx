@@ -12,7 +12,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PrintIcon from '@mui/icons-material/Print';
 import Navigation from '../../components/Navigation';
-import { getProductos, getCajaActiva, abrirCaja, cerrarCaja, registrarVenta, getVentas } from '../../services/api';
+import api, { getProductos, getCajaActiva, abrirCaja, cerrarCaja, registrarVenta, getVentas } from '../../services/api';
 
 interface Producto {
   id: number;
@@ -136,11 +136,8 @@ export default function PosDashboard() {
 
       // Cargar clientes para la venta
       try {
-        const response = await fetch('http://localhost:5288/api/Creditos/clientes');
-        if (response.ok) {
-          const cls = await response.json();
-          setClientes(cls);
-        }
+        const response = await api.get('/Creditos/clientes');
+        setClientes(response.data);
       } catch (err) {
         console.error("Error al obtener clientes:", err);
       }
@@ -270,35 +267,23 @@ export default function PosDashboard() {
     }
 
     try {
-      const response = await fetch('http://localhost:5288/api/Creditos/clientes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre: newClienteForm.nombre,
-          documento: newClienteForm.documento,
-          limiteCredito: Number(newClienteForm.limiteCredito)
-        })
+      const response = await api.post('/Creditos/clientes', {
+        nombre: newClienteForm.nombre,
+        documento: newClienteForm.documento,
+        limiteCredito: Number(newClienteForm.limiteCredito)
       });
 
-      if (response.ok) {
-        const createdClient = await response.json();
-        alert(`¡Cliente ${createdClient.nombre} registrado con éxito!`);
-        // Recargar la lista de clientes
-        const reloadRes = await fetch('http://localhost:5288/api/Creditos/clientes');
-        if (reloadRes.ok) {
-          const cls = await reloadRes.json();
-          setClientes(cls);
-        }
-        setClienteId(createdClient.id.toString());
-        setOpenClienteModal(false);
-        setNewClienteForm({ nombre: '', documento: '', limiteCredito: 100 });
-      } else {
-        const errMsg = await response.text();
-        setClienteError(errMsg || 'Error al guardar el cliente en el servidor.');
-      }
+      const createdClient = response.data;
+      alert(`¡Cliente ${createdClient.nombre} registrado con éxito!`);
+      // Recargar la lista de clientes
+      const reloadRes = await api.get('/Creditos/clientes');
+      setClientes(reloadRes.data);
+      setClienteId(createdClient.id.toString());
+      setOpenClienteModal(false);
+      setNewClienteForm({ nombre: '', documento: '', limiteCredito: 100 });
     } catch (e: any) {
       console.error(e);
-      setClienteError('Error de red al registrar el cliente.');
+      setClienteError(e.response?.data || 'Error de red al registrar el cliente.');
     }
   };
 

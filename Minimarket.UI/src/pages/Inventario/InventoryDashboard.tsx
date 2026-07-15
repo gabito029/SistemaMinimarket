@@ -48,7 +48,7 @@ const InventoryDashboard: React.FC = () => {
     precioCosto: 0,
     precioVenta: 0,
     stockActual: 0,
-    stockMinimo: 5,
+    stockMinimo: 10,
     categoriaId: '',
     fechaVencimiento: ''
   });
@@ -117,7 +117,7 @@ const InventoryDashboard: React.FC = () => {
         precioCosto: 0,
         precioVenta: 0,
         stockActual: 0,
-        stockMinimo: 5,
+      stockMinimo: 10,
         categoriaId: '',
         fechaVencimiento: ''
       });
@@ -136,7 +136,7 @@ const InventoryDashboard: React.FC = () => {
       precioCosto: prod.precioCosto || 0,
       precioVenta: prod.precioVenta,
       stockActual: prod.stockActual,
-      stockMinimo: prod.stockMinimo || 5,
+                stockMinimo: prod.stockMinimo || 10,
       categoriaId: prod.categoriaId ? prod.categoriaId.toString() : '',
       fechaVencimiento: prod.fechaVencimiento ? prod.fechaVencimiento.split('T')[0] : ''
     });

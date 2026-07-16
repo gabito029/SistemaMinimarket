@@ -40,7 +40,7 @@ El sistema no utiliza tokens JWT complejos (diseño educativo simple). La sesió
 ### **Lógica de Redirección según Roles (`src/pages/Login.tsx`):**
 Al iniciar sesión, el sistema evalúa la propiedad `rol` para decidir a qué panel enviar al usuario:
 * **Cajero:** Redirige al terminal POS: `navigate('/pos')`.
-* **Administrador:** Redirige al inventario: `navigate('/inventario')`.
+* **Administrador:** Redirige al inventario: `navigate('/dashboard')`.
 
 ---
 
